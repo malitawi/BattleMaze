@@ -1,0 +1,13 @@
+17
+11
+G D T T T T T G G G G D T T T T G
+G G D T T T T G G G G T G T T G G
+T T G T T T S S S S T T S T T G T
+T T S T T T S S G G S S S G S D T
+T G S S T T S S G G S G G G S S T
+G G D D S S S S S G D G S D S S G
+G G D G G S S G G D S S S T T T D
+T T D G G G G G G S S S S T T T T
+T T T G G S G D S S S S T T T T T
+T T T G G G G S S S S T T T T T T
+G D T T T T T G G G G G T T T T G
