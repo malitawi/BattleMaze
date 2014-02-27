@@ -62,6 +62,8 @@ int main(int argc, char* argv[])
     Text.move(float(VMode.width)/2 - float(65.0), 0);
     Text.setCharacterSize(32U);
 
+    Window.setFramerateLimit(60);
+
     while (Window.isOpen()){
         Event Event;
         while (Window.pollEvent(Event)){
@@ -80,6 +82,9 @@ int main(int argc, char* argv[])
                     xMove = yMove = 0;
                     xGuiMove = yGuiMove = 0.0f;
 					switch (Event.key.code){
+                        case Keyboard::Escape:
+                            Window.close();
+                            break;
 						case Keyboard::Up:
 							//cout << "The up arrow was pressed" << endl;
                             yMove -= 1;

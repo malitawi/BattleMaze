@@ -1,7 +1,7 @@
 CC = clang++
 LD = clang++
 
-CFLAGS = -c -m64 -Wall -Werror -pedantic -std=c++11 -stdlib=libc++ -g
+CFLAGS = -c -m64 -Wall -Werror -pedantic -std=c++11 -stdlib=libc++
 LFLAGS = -m64 -pedantic
 SFML_LIBS = -lsfml-graphics.2 -lsfml-window.2 -lsfml-system.2
 
