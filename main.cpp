@@ -27,7 +27,6 @@ shared_ptr<GameMap> LoadGameBoard(string);
 int main(int argc, char* argv[])
 {
     // initialize map and game board
-    // shared_ptr<GameMap> World(new GameMap);
     shared_ptr<GameMap> World = LoadGameBoard("gameboard1.txt");
 	VideoMode VMode(1440, 900, 32);
     RenderWindow Window(VMode, "Battlemaze");
@@ -46,6 +45,7 @@ int main(int argc, char* argv[])
     Grunt.setPosition(362.5f + (9.0f * 42.25f), 225.0f + (5.0 * 41.0f));
 
     int xcurr = 0, ycurr = 0, xMove = 0, yMove = 0;
+    int nextXPos = -1, nextYPos = -1;
     float xGuiMove = 0.0f, yGuiMove = 0.0f;
 
     shared_ptr<Player> footman(new Player(xcurr, ycurr));
@@ -73,10 +73,10 @@ int main(int argc, char* argv[])
 					Window.close();
 					break;
 				case Event::GainedFocus:
-					cout << "GUI Window gained foucs" << endl;
+					// cout << "GUI Window gained foucs" << endl;
 					break;
 				case Event::LostFocus:
-					cout << "GUI Window lost focus" << endl;
+					// cout << "GUI Window lost focus" << endl;
 					break;
 				case Event::KeyReleased:
                     xMove = yMove = 0;
@@ -108,16 +108,18 @@ int main(int argc, char* argv[])
 						default:
 							break;
 					}
-                    if (World->IsValidSpot(xcurr + xMove, ycurr + yMove)){
-                        if (World->IsTileOccupied(xcurr + xMove, ycurr + yMove) && ((xcurr + xMove) != xcurr || (ycurr + yMove) != ycurr)){
-                            World->AttackPlayer(xcurr + xMove, ycurr + yMove, xcurr, ycurr);
-                            World->AttackPlayer(xcurr, ycurr, xcurr + xMove, ycurr + yMove);
+                    nextXPos = xcurr + xMove;
+                    nextYPos = ycurr + yMove;
+                    if (World->IsValidSpot(nextXPos, nextYPos)){
+                        if (World->IsTileOccupied(nextXPos, nextYPos) && ((nextXPos) != xcurr || (nextYPos) != ycurr)){
+                            World->AttackPlayer(nextXPos, nextYPos, xcurr, ycurr);
+                            World->AttackPlayer(xcurr, ycurr, nextXPos, nextYPos);
                         }
                         else{
-                            cout << "Moved to tile: (" << xcurr + xMove << ", " << ycurr + yMove << ")" << endl;
+                            cout << "Moved to tile: (" << nextXPos << ", " << nextYPos << ")" << endl;
                             World->SetTileOccupant(xcurr, ycurr, NULL);
                             footman->Move(xMove, yMove);
-                            World->SetTileOccupant(xcurr + xMove, ycurr + yMove, footman);
+                            World->SetTileOccupant(nextXPos, nextYPos, footman);
                             xcurr += xMove;
                             ycurr += yMove;
                             Footman.move(xGuiMove, yGuiMove);

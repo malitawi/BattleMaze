@@ -1,2 +1,3 @@
 *.o
 battlemaze
+.DS_Store
