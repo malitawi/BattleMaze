@@ -22,6 +22,7 @@ class Tile
         void SetTileStats(int, int, TileType, Walkable);
         bool IsOccupied();
         void AssignPlayer(std::shared_ptr<Player> inPlayer);
+        std::shared_ptr<Player> GetPlayer();
         void PlayerHit(int);
         int PlayerAttacks();
         Walkable IsTileWalkable();

@@ -4,7 +4,7 @@
 #include <string>
 
 enum TileType {
-    GRASS = 0,
+    GRASS,
     DIRT,
     STONE,
     TREE,
@@ -14,15 +14,10 @@ enum TileType {
 const std::string TileTypeNames[5] = {"GRASS", "DIRT", "STONE", "TREE", "WATER"};
 
 enum Walkable {
-    WALKABLE = 0,
+    WALKABLE,
     NOT_WALKABLE
 };
 
 const std::string WalkableNames[2] = {"WALKABLE", "NOT_WALKABLE"};
 
-struct PlayerStats{
-    int health;
-    int damage;
-    std::string name;
-};
 #endif

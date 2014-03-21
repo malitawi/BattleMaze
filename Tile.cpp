@@ -47,6 +47,14 @@ void Tile::AssignPlayer(shared_ptr<Player> inPlayer)
     }
 }
 
+shared_ptr<Player> Tile::GetPlayer()
+{
+    if (IsOccupied()) {
+        return currPlayer;
+    }
+    return nullptr;
+}
+
 void Tile::PlayerHit(int dmg)
 {
     currPlayer->TakeDamage(dmg);
@@ -54,7 +62,8 @@ void Tile::PlayerHit(int dmg)
 
 int Tile::PlayerAttacks()
 {
-    return currPlayer->Attack();
+    // return currPlayer->Attack();
+    return 1;
 }
 
 Walkable Tile::IsTileWalkable()

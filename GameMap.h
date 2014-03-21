@@ -1,9 +1,10 @@
 #ifndef GAMEMAP_H
 #define GAMEMAP_H
 
+#include "DataTypes.h"
 #include <vector>
 #include <memory>
-#include "DataTypes.h"
+
 class Tile;
 class Player;
 
@@ -23,7 +24,8 @@ class GameMap
         bool IsTileOccupied(int, int);
         void SetTileOccupant(int, int, std::shared_ptr<Player>);
         bool IsValidSpot(int, int);
-        void AttackPlayer(int, int, int, int);
-        void AddPlayer(std::shared_ptr<Player> inPlayer);
+        void AttackPlayer(std::shared_ptr<Player>, std::shared_ptr<Player>);
+        void AddPlayer(std::shared_ptr<Player>);
+        std::shared_ptr<Player> GetPlayer(int, int);
 };
 #endif

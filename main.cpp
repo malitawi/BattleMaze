@@ -44,14 +44,13 @@ int main(int argc, char* argv[])
     Footman.setPosition(362.5f, 225.0f);
     Grunt.setPosition(362.5f + (9.0f * 42.25f), 225.0f + (5.0 * 41.0f));
 
-    int xcurr = 0, ycurr = 0, xMove = 0, yMove = 0;
+    int currXPos = 0, currYPos = 0, xMove = 0, yMove = 0;
     int nextXPos = -1, nextYPos = -1;
     float xGuiMove = 0.0f, yGuiMove = 0.0f;
 
-    shared_ptr<Player> footman(new Player(xcurr, ycurr));
-    shared_ptr<Player> grunt(new Player(9, 5)); 
-    footman->SetStats(180, 12, "Footman");
-    grunt->SetStats(240, 10, "Grunt");
+    shared_ptr<Player> footman(new Player(currXPos, currYPos, 180, 12, "Footman"));
+    shared_ptr<Player> grunt(new Player(9, 5, 240, 10, "Grunt"));
+
     World->AddPlayer(footman);
     World->SetTileOccupant(0, 0, footman);
     World->AddPlayer(grunt);
@@ -69,7 +68,7 @@ int main(int argc, char* argv[])
         while (Window.pollEvent(Event)){
             switch (Event.type){
 				case Event::Closed:
-					cout << "Window Closed" << endl;
+					// cout << "Window Closed" << endl;
 					Window.close();
 					break;
 				case Event::GainedFocus:
@@ -108,20 +107,30 @@ int main(int argc, char* argv[])
 						default:
 							break;
 					}
-                    nextXPos = xcurr + xMove;
-                    nextYPos = ycurr + yMove;
+                    nextXPos = currXPos + xMove;
+                    nextYPos = currYPos + yMove;
                     if (World->IsValidSpot(nextXPos, nextYPos)){
-                        if (World->IsTileOccupied(nextXPos, nextYPos) && ((nextXPos) != xcurr || (nextYPos) != ycurr)){
-                            World->AttackPlayer(nextXPos, nextYPos, xcurr, ycurr);
-                            World->AttackPlayer(xcurr, ycurr, nextXPos, nextYPos);
+                        if (World->IsTileOccupied(nextXPos, nextYPos) && ((nextXPos) != currXPos || (nextYPos) != currYPos)){
+                            shared_ptr<Player> Attacker = World->GetPlayer(currXPos, currYPos);
+                            shared_ptr<Player> Victim = World->GetPlayer(nextXPos, nextYPos);
+                            if (!Attacker->HasTarget()) {
+                                Attacker->AcquireTarget(Victim);
+                            }
+                            if (!Victim->HasTarget()) {
+                                Victim->AcquireTarget(Attacker);
+                            }
+                            Attacker->AttackTarget();
+                            Victim->AttackTarget();
+                            // World->AttackPlayer(Victim, Attacker);
+                            // World->AttackPlayer(Attacker, Victim);
                         }
                         else{
                             cout << "Moved to tile: (" << nextXPos << ", " << nextYPos << ")" << endl;
-                            World->SetTileOccupant(xcurr, ycurr, NULL);
+                            World->SetTileOccupant(currXPos, currYPos, nullptr);
                             footman->Move(xMove, yMove);
                             World->SetTileOccupant(nextXPos, nextYPos, footman);
-                            xcurr += xMove;
-                            ycurr += yMove;
+                            currXPos += xMove;
+                            currYPos += yMove;
                             Footman.move(xGuiMove, yGuiMove);
                         }
                     }else{
