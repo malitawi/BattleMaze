@@ -4,10 +4,10 @@
 #include "DataTypes.h"
 #include <memory>
 
-struct PlayerCoordinates {
+struct Coordinates {
     int xCoord;
     int yCoord;
-    PlayerCoordinates(int xCoord_, int yCoord_):xCoord(xCoord_), yCoord(yCoord_) {}
+    Coordinates(int xCoord_, int yCoord_):xCoord(xCoord_), yCoord(yCoord_) {}
 };
 
 class Player
@@ -16,7 +16,7 @@ class Player
         int health;
         int damage;
         std::string name;
-        PlayerCoordinates position;
+        Coordinates position;
         std::weak_ptr<Player> target;
         
         enum Player_State_e { ALIVE, DEAD };

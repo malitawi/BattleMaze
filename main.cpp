@@ -40,7 +40,8 @@ int main(int argc, char* argv[])
     // assign sprite and map configurations
 	Sprite Map(Map_pic), Footman(Footman_pic), Grunt(Grunt_pic);
 	Map.setPosition(float(VMode.width)/4, float(VMode.height)/4);
-	Map.setScale(float(VMode.width)/float(Map.getTexture()->getSize().x)/2, float(VMode.height)/float(Map.getTexture()->getSize().y)/2);
+	Map.setScale(float(VMode.width)/float(Map.getTexture()->getSize().x)/2, 
+                float(VMode.height)/float(Map.getTexture()->getSize().y)/2);
     Footman.setPosition(362.5f, 225.0f);
     Grunt.setPosition(362.5f + (9.0f * 42.25f), 225.0f + (5.0 * 41.0f));
 
@@ -135,7 +136,7 @@ int main(int argc, char* argv[])
                         }
                     }else{
                         cout << "Cannot move to tile" << endl;
-                    }
+                    }    
                     break;
 				default:
 					break;

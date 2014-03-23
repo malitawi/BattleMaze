@@ -51,10 +51,10 @@ bool GameMap::IsValidSpot(int x, int y)
 
 void GameMap::AttackPlayer(shared_ptr<Player> attacker, shared_ptr<Player> victim)
 {
-    PlayerCoordinates Attacker(attacker->GetXSpot(), attacker->GetYSpot());
-    PlayerCoordinates Victim(victim->GetXSpot(), victim->GetYSpot());
+    // Coordinates Attacker(attacker->GetXSpot(), attacker->GetYSpot());
+    // Coordinates Victim(victim->GetXSpot(), victim->GetYSpot());
 
-    Map[Victim.yCoord][Victim.xCoord].PlayerHit(Map[Attacker.yCoord][Attacker.xCoord].PlayerAttacks());
+    // Map[Victim.yCoord][Victim.xCoord].PlayerHit(Map[Attacker.yCoord][Attacker.xCoord].PlayerAttacks());
 }
 
 void GameMap::AddPlayer(shared_ptr<Player> inPlayer)

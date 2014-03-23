@@ -20,6 +20,13 @@ class GameMap
         GameMap();
         GameMap(int inWidth, int inHeight);
         ~GameMap();
+
+        // disallow copy/move, construction, or assignment
+        GameMap(const GameMap&) = delete;
+        GameMap(GameMap&&) = delete;
+        GameMap& operator =(const GameMap&) = delete;
+        GameMap& operator =(GameMap&&) = delete;
+
         void SetTile(int, int, TileType, Walkable);
         bool IsTileOccupied(int, int);
         void SetTileOccupant(int, int, std::shared_ptr<Player>);

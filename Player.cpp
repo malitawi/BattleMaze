@@ -7,7 +7,7 @@ using std::string;
 using std::shared_ptr; using std::weak_ptr;
 
 Player::Player(int XPos_, int YPos_, int HP_, int DMG_, string name_)
-    :health(HP_), damage(DMG_), name(name_), position(PlayerCoordinates(XPos_, YPos_)), player_state(ALIVE)
+    :health(HP_), damage(DMG_), name(name_), position(Coordinates(XPos_, YPos_)), player_state(ALIVE)
 {
     position.xCoord = XPos_;
     position.yCoord = YPos_;
