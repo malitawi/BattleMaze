@@ -7,22 +7,26 @@
 #include <cstdlib>
 #include <string>
 #include <memory>
+#include <algorithm>
 #include "DataTypes.h"
 #include "GameMap.h"
 #include "Tile.h"
 #include "Player.h"
 
 using sf::VideoMode; using sf::RenderWindow;
-using sf::Texture; using sf::Sprite; using sf::Text;
+using sf::Texture; using sf::Sprite; using sf::Text; using sf::Drawable;
 using sf::Color; using sf::Font; using sf::String;
 using sf::Event; using sf::Keyboard;
 
 using std::cout; using std::endl;
+using std::vector;
+using std::for_each;
 using std::ifstream; using std::getline;
 using std::string;
 using std::shared_ptr; using std::make_shared;
 
 shared_ptr<GameMap> LoadGameBoard(string);
+vector<Sprite*> Sprite_container;
 
 int main(int argc, char* argv[])
 {
@@ -38,12 +42,16 @@ int main(int argc, char* argv[])
     if (!Grunt_pic.loadFromFile("Sprites/grunt.png")) return 1;
 
     // assign sprite and map configurations
-	Sprite Map(Map_pic), Footman(Footman_pic), Grunt(Grunt_pic);
-	Map.setPosition(float(VMode.width)/4, float(VMode.height)/4);
-	Map.setScale(float(VMode.width)/float(Map.getTexture()->getSize().x)/2, 
-                float(VMode.height)/float(Map.getTexture()->getSize().y)/2);
-    Footman.setPosition(362.5f, 225.0f);
-    Grunt.setPosition(362.5f + (9.0f * 42.25f), 225.0f + (5.0 * 41.0f));
+    Sprite* Map = new Sprite(Map_pic);
+    Sprite* Footman = new Sprite(Footman_pic);
+    Sprite* Grunt = new Sprite(Grunt_pic);
+
+	// Sprite Map(Map_pic), Footman(Footman_pic), Grunt(Grunt_pic);
+	Map->setPosition(float(VMode.width)/4, float(VMode.height)/4);
+	Map->setScale(float(VMode.width)/float(Map->getTexture()->getSize().x)/2, 
+                float(VMode.height)/float(Map->getTexture()->getSize().y)/2);
+    Footman->setPosition(362.5f, 225.0f);
+    Grunt->setPosition(362.5f + (9.0f * 42.25f), 225.0f + (5.0 * 41.0f));
 
     int currXPos = 0, currYPos = 0, xMove = 0, yMove = 0;
     int nextXPos = -1, nextYPos = -1;
@@ -57,10 +65,18 @@ int main(int argc, char* argv[])
     World->AddPlayer(grunt);
     World->SetTileOccupant(9, 5, grunt);
 
-    Text Text("Battle Maze", Font());
-    Text.setColor(Color(0, 255, 0));
-    Text.move(float(VMode.width)/2 - float(65.0), 0);
-    Text.setCharacterSize(32U);
+    // Drawable* Title = new Text("Battle Maze", Font());
+    Font font;
+    font.loadFromFile("/Library/Fonts/Arial Unicode.ttf");
+    Text Title("Battle Maze", font);
+    Title.setColor(Color(0, 255, 0));
+    Title.move(float(VMode.width)/2 - float(65.0), 0);
+    Title.setCharacterSize(32U);
+
+    Sprite_container.push_back(Map);
+    Sprite_container.push_back(Footman);
+    Sprite_container.push_back(Grunt);
+    // Sprite_container.push_back(Title);
 
     Window.setFramerateLimit(60);
 
@@ -132,21 +148,24 @@ int main(int argc, char* argv[])
                             World->SetTileOccupant(nextXPos, nextYPos, footman);
                             currXPos += xMove;
                             currYPos += yMove;
-                            Footman.move(xGuiMove, yGuiMove);
+                            Footman->move(xGuiMove, yGuiMove);
                         }
                     }else{
                         cout << "Cannot move to tile" << endl;
                     }    
                     break;
-				default:
-					break;
+                default:
+                    break;
             }
         }
         Window.clear(Color(0, 55, 255));
-		Window.draw(Map);
-        Window.draw(Footman);
-        Window.draw(Grunt);
-        Window.draw(Text);
+        for_each(Sprite_container.begin(), Sprite_container.end(), [&Window](Sprite* sprite){
+            Window.draw(*sprite);
+        });
+        // Window.draw(*Map);
+        // Window.draw(*Footman);
+        // Window.draw(*Grunt);
+        Window.draw(Title);
         Window.display();
     }
     return 0;
