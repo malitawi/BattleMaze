@@ -26,29 +26,33 @@ using std::string;
 using std::shared_ptr; using std::make_shared;
 
 shared_ptr<GameMap> LoadGameBoard(string);
-vector<Sprite*> Sprite_container;
+vector<shared_ptr<Sprite>> Sprite_container;
 
 int main(int argc, char* argv[])
 {
     // initialize map and game board
     shared_ptr<GameMap> World = LoadGameBoard("gameboard1.txt");
-	VideoMode VMode(1440, 900, 32);
+    VideoMode VMode(1440, 900, 32);
     RenderWindow Window(VMode, "Battlemaze");
-	Texture Map_pic, Footman_pic, Grunt_pic;
+    Texture Map_pic, Footman_pic, Grunt_pic;
 
     // load sprites
-	if (!Map_pic.loadFromFile("Sprites/map.png")) return 1;
+    if (!Map_pic.loadFromFile("Sprites/map.png")) return 1;
     if (!Footman_pic.loadFromFile("Sprites/footman.png")) return 1;
     if (!Grunt_pic.loadFromFile("Sprites/grunt.png")) return 1;
 
     // assign sprite and map configurations
-    Sprite* Map = new Sprite(Map_pic);
-    Sprite* Footman = new Sprite(Footman_pic);
-    Sprite* Grunt = new Sprite(Grunt_pic);
+    shared_ptr<Sprite> Map(new Sprite(Map_pic));
+    shared_ptr<Sprite> Footman(new Sprite(Footman_pic));
+    shared_ptr<Sprite> Grunt(new Sprite(Grunt_pic));
 
-	// Sprite Map(Map_pic), Footman(Footman_pic), Grunt(Grunt_pic);
-	Map->setPosition(float(VMode.width)/4, float(VMode.height)/4);
-	Map->setScale(float(VMode.width)/float(Map->getTexture()->getSize().x)/2, 
+    // store sprites into container
+    Sprite_container.push_back(Map);
+    Sprite_container.push_back(Footman);
+    Sprite_container.push_back(Grunt);
+
+    Map->setPosition(float(VMode.width)/4, float(VMode.height)/4);
+    Map->setScale(float(VMode.width)/float(Map->getTexture()->getSize().x)/2, 
                 float(VMode.height)/float(Map->getTexture()->getSize().y)/2);
     Footman->setPosition(362.5f, 225.0f);
     Grunt->setPosition(362.5f + (9.0f * 42.25f), 225.0f + (5.0 * 41.0f));
@@ -65,18 +69,11 @@ int main(int argc, char* argv[])
     World->AddPlayer(grunt);
     World->SetTileOccupant(9, 5, grunt);
 
-    // Drawable* Title = new Text("Battle Maze", Font());
     Font font;
     font.loadFromFile("/Library/Fonts/Arial Unicode.ttf");
-    Text Title("Battle Maze", font);
+    Text Title("Battle Maze", font, 32);
     Title.setColor(Color(0, 255, 0));
-    Title.move(float(VMode.width)/2 - float(65.0), 0);
-    Title.setCharacterSize(32U);
-
-    Sprite_container.push_back(Map);
-    Sprite_container.push_back(Footman);
-    Sprite_container.push_back(Grunt);
-    // Sprite_container.push_back(Title);
+    Title.move(float(VMode.width)/2 - float(65.0), 20);
 
     Window.setFramerateLimit(60);
 
@@ -84,46 +81,46 @@ int main(int argc, char* argv[])
         Event Event;
         while (Window.pollEvent(Event)){
             switch (Event.type){
-				case Event::Closed:
-					// cout << "Window Closed" << endl;
-					Window.close();
-					break;
-				case Event::GainedFocus:
-					// cout << "GUI Window gained foucs" << endl;
-					break;
-				case Event::LostFocus:
-					// cout << "GUI Window lost focus" << endl;
-					break;
-				case Event::KeyReleased:
+                case Event::Closed:
+                    // cout << "Window Closed" << endl;
+                    Window.close();
+                    break;
+                case Event::GainedFocus:
+                    // cout << "GUI Window gained foucs" << endl;
+                    break;
+                case Event::LostFocus:
+                    // cout << "GUI Window lost focus" << endl;
+                    break;
+                case Event::KeyReleased:
                     xMove = yMove = 0;
                     xGuiMove = yGuiMove = 0.0f;
-					switch (Event.key.code){
+                    switch (Event.key.code){
                         case Keyboard::Escape:
                             Window.close();
                             break;
-						case Keyboard::Up:
-							//cout << "The up arrow was pressed" << endl;
+                        case Keyboard::Up:
+                            //cout << "The up arrow was pressed" << endl;
                             yMove -= 1;
                             yGuiMove = -41.0f;
-  							break;
-						case Keyboard::Down:
-							//cout << "The down arrow was pressed" << endl;
+                            break;
+                        case Keyboard::Down:
+                            //cout << "The down arrow was pressed" << endl;
                             yMove += 1;
                             yGuiMove = 41.0f;
-							break;
-						case Keyboard::Right:
-							//cout << "The right arrow was pressed" << endl;
+                            break;
+                        case Keyboard::Right:
+                            //cout << "The right arrow was pressed" << endl;
                             xMove += 1;
                             xGuiMove = 42.25f;
-							break;
-						case Keyboard::Left:
-							//cout << "The left arrow was pressed" << endl;
+                            break;
+                        case Keyboard::Left:
+                            //cout << "The left arrow was pressed" << endl;
                             xMove -= 1;
                             xGuiMove = -42.25f;
-							break;
-						default:
-							break;
-					}
+                            break;
+                        default:
+                            break;
+                    }
                     nextXPos = currXPos + xMove;
                     nextYPos = currYPos + yMove;
                     if (World->IsValidSpot(nextXPos, nextYPos)){
@@ -138,8 +135,6 @@ int main(int argc, char* argv[])
                             }
                             Attacker->AttackTarget();
                             Victim->AttackTarget();
-                            // World->AttackPlayer(Victim, Attacker);
-                            // World->AttackPlayer(Attacker, Victim);
                         }
                         else{
                             cout << "Moved to tile: (" << nextXPos << ", " << nextYPos << ")" << endl;
@@ -159,13 +154,9 @@ int main(int argc, char* argv[])
             }
         }
         Window.clear(Color(0, 55, 255));
-        for_each(Sprite_container.begin(), Sprite_container.end(), [&Window](Sprite* sprite){
-            Window.draw(*sprite);
-        });
-        // Window.draw(*Map);
-        // Window.draw(*Footman);
-        // Window.draw(*Grunt);
         Window.draw(Title);
+        for_each(Sprite_container.begin(), Sprite_container.end(), [&Window](shared_ptr<Sprite> sprite)
+            {   Window.draw(*sprite); });
         Window.display();
     }
     return 0;

@@ -31,7 +31,6 @@ class GameMap
         bool IsTileOccupied(int, int);
         void SetTileOccupant(int, int, std::shared_ptr<Player>);
         bool IsValidSpot(int, int);
-        void AttackPlayer(std::shared_ptr<Player>, std::shared_ptr<Player>);
         void AddPlayer(std::shared_ptr<Player>);
         std::shared_ptr<Player> GetPlayer(int, int);
 };

@@ -60,12 +60,6 @@ void Tile::PlayerHit(int dmg)
     currPlayer->TakeDamage(dmg);
 }
 
-int Tile::PlayerAttacks()
-{
-    // return currPlayer->Attack();
-    return 1;
-}
-
 Walkable Tile::IsTileWalkable()
 {
     return CanWalk;

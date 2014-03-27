@@ -24,7 +24,6 @@ class Tile
         void AssignPlayer(std::shared_ptr<Player> inPlayer);
         std::shared_ptr<Player> GetPlayer();
         void PlayerHit(int);
-        int PlayerAttacks();
         Walkable IsTileWalkable();
 };
 #endif

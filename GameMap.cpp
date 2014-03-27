@@ -49,14 +49,6 @@ bool GameMap::IsValidSpot(int x, int y)
     return (x >= 0 && x < width && y >= 0 && y < height && Map[y][x].IsTileWalkable() == WALKABLE);
 }
 
-void GameMap::AttackPlayer(shared_ptr<Player> attacker, shared_ptr<Player> victim)
-{
-    // Coordinates Attacker(attacker->GetXSpot(), attacker->GetYSpot());
-    // Coordinates Victim(victim->GetXSpot(), victim->GetYSpot());
-
-    // Map[Victim.yCoord][Victim.xCoord].PlayerHit(Map[Attacker.yCoord][Attacker.xCoord].PlayerAttacks());
-}
-
 void GameMap::AddPlayer(shared_ptr<Player> inPlayer)
 {
     players.push_back(inPlayer);
