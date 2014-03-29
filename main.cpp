@@ -12,6 +12,7 @@
 #include "GameMap.h"
 #include "Tile.h"
 #include "Player.h"
+#include "GameModel.h"
 
 using sf::VideoMode; using sf::RenderWindow;
 using sf::Texture; using sf::Sprite; using sf::Text; using sf::Drawable;
@@ -46,6 +47,10 @@ int main(int argc, char* argv[])
     shared_ptr<Sprite> Footman(new Sprite(Footman_pic));
     shared_ptr<Sprite> Grunt(new Sprite(Grunt_pic));
 
+    GameModel::GetInstance().AddSprite(Map);
+    GameModel::GetInstance().AddSprite(Footman);
+    GameModel::GetInstance().AddSprite(Grunt);
+
     // store sprites into container
     Sprite_container.push_back(Map);
     Sprite_container.push_back(Footman);
@@ -63,6 +68,9 @@ int main(int argc, char* argv[])
 
     shared_ptr<Player> footman(new Player(currXPos, currYPos, 180, 12, "Footman"));
     shared_ptr<Player> grunt(new Player(9, 5, 240, 10, "Grunt"));
+
+    GameModel::GetInstance().AddPlayer(footman);
+    GameModel::GetInstance().AddPlayer(grunt);
 
     World->AddPlayer(footman);
     World->SetTileOccupant(0, 0, footman);
