@@ -20,4 +20,9 @@ enum Walkable {
 
 const std::string WalkableNames[2] = {"WALKABLE", "NOT_WALKABLE"};
 
+struct Error {
+    const char* msg;
+    Error(const char* msg_):msg(msg_) {}
+};
+
 #endif

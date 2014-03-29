@@ -3,8 +3,9 @@
 
 // #include "DataTypes.h"
 #include <memory>
-#include <vector>
 #include <set>
+#include <map>
+#include <string>
 #include <SFML/Graphics.hpp>
 
 class Player;
@@ -22,7 +23,9 @@ class GameModel
 		static GameModel& GetInstance();
 
 		// Sprite functions
-		void AddSprite(std::shared_ptr<sf::Sprite>);
+		void AddSprite(const std::string&, std::shared_ptr<sf::Sprite>);
+		void UpdateSprites(sf::RenderWindow&);
+		std::shared_ptr<sf::Sprite> FindSprite(const std::string&);
 
 		// Player functions
 		void AddPlayer(std::shared_ptr<Player>);
@@ -31,11 +34,13 @@ class GameModel
 		GameModel(); // This class is a singleton
 
 		// containers typedefs
-		typedef std::set<std::shared_ptr<sf::Sprite>> Sprite_cont_t;
+		typedef std::map<std::string, std::shared_ptr<sf::Sprite>> Sprite_cont_t;
+		typedef std::set<std::shared_ptr<sf::Sprite>> Sprite_cont_set_t;
 		typedef std::set<std::shared_ptr<Player>> Player_cont_t;
 
 		// container definitions
 		Sprite_cont_t Sprite_container;
+		Sprite_cont_set_t sprites;
 		Player_cont_t Player_container;
 };
 
