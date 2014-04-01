@@ -25,32 +25,25 @@ using std::shared_ptr; using std::make_shared;
 
 GameController::GameController(): VMode(1440, 900, 32), Window(VMode, "Battlemaze")
 {
+    LoadSprites();
+    InitializeGame();
 }
 
 void GameController::run(shared_ptr<GameMap> World)
 {
-	LoadSprites();
-
 	shared_ptr<Sprite> Map = GameModel::GetInstance().FindSprite("Map");
 	shared_ptr<Sprite> Footman = GameModel::GetInstance().FindSprite("Footman");
 	shared_ptr<Sprite> Grunt = GameModel::GetInstance().FindSprite("Grunt");
 	assert(Map); assert(Footman); assert(Grunt);
 
-    Map->setPosition(float(VMode.width)/4, float(VMode.height)/4);
-    Map->setScale(float(VMode.width)/float(Map->getTexture()->getSize().x)/2, 
-                float(VMode.height)/float(Map->getTexture()->getSize().y)/2);
-    Footman->setPosition(362.5f, 225.0f);
-    Grunt->setPosition(362.5f + (9.0f * 42.25f), 225.0f + (5.0 * 41.0f));
-
     int currXPos = 0, currYPos = 0, xMove = 0, yMove = 0;
     int nextXPos = -1, nextYPos = -1;
     float xGuiMove = 0.0f, yGuiMove = 0.0f;
 
-    shared_ptr<Player> footman(new Player(currXPos, currYPos, 180, 12, "Footman"));
-    shared_ptr<Player> grunt(new Player(9, 5, 240, 10, "Grunt"));
 
-    GameModel::GetInstance().AddPlayer(footman);
-    GameModel::GetInstance().AddPlayer(grunt);
+    shared_ptr<Player> footman = GameModel::GetInstance().FindPlayer("footman");
+    shared_ptr<Player> grunt = GameModel::GetInstance().FindPlayer("grunt");
+    assert(footman); assert(grunt);
 
     World->AddPlayer(footman);
     World->SetTileOccupant(0, 0, footman);
@@ -62,8 +55,6 @@ void GameController::run(shared_ptr<GameMap> World)
     Text Title("Battle Maze", font, 32);
     Title.setColor(Color(0, 255, 0));
     Title.move(float(VMode.width)/2 - float(65.0), 20);
-
-    Window.setFramerateLimit(60);
 
     while (Window.isOpen()){
         Event Event;
@@ -154,4 +145,21 @@ void GameController::LoadSprites()
     GameModel::GetInstance().AddSprite("Map", Map);
     GameModel::GetInstance().AddSprite("Footman", Footman);
     GameModel::GetInstance().AddSprite("Grunt", Grunt);
+
+    Map->setPosition(float(VMode.width)/4, float(VMode.height)/4);
+    Map->setScale(float(VMode.width)/float(Map->getTexture()->getSize().x)/2, 
+                float(VMode.height)/float(Map->getTexture()->getSize().y)/2);
+    Footman->setPosition(362.5f, 225.0f);
+    Grunt->setPosition(362.5f + (9.0f * 42.25f), 225.0f + (5.0 * 41.0f));
+}
+
+void GameController::InitializeGame()
+{
+    Window.setFramerateLimit(60);
+
+    shared_ptr<Player> footman(new Player(0, 0, 180, 12, "Footman"));
+    shared_ptr<Player> grunt(new Player(9, 5, 240, 10, "Grunt"));
+
+    GameModel::GetInstance().AddPlayer("footman", footman);
+    GameModel::GetInstance().AddPlayer("grunt", grunt);
 }

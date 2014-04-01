@@ -21,6 +21,7 @@ private:
 	sf::Texture Map_pic, Footman_pic, Grunt_pic;
 
 	void LoadSprites();
+	void InitializeGame();
 };
 
 #endif

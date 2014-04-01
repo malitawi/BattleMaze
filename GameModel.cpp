@@ -43,7 +43,16 @@ shared_ptr<Sprite> GameModel::FindSprite(const string& name)
 	return iter->second;
 }
 
-void GameModel::AddPlayer(shared_ptr<Player> player)
+void GameModel::AddPlayer(const string& name, shared_ptr<Player> player)
 {
-	Player_container.insert(player);
+	Player_container.insert(pair<string, shared_ptr<Player>>(name, player));
+}
+
+shared_ptr<Player> GameModel::FindPlayer(const string& name)
+{
+	auto iter = Player_container.find(name);
+	if (iter == Player_container.end()){
+		throw Error("Player not found!");
+	}
+	return iter->second;
 }
