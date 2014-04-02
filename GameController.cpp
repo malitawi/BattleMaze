@@ -40,7 +40,6 @@ void GameController::run(shared_ptr<GameMap> World)
     int nextXPos = -1, nextYPos = -1;
     float xGuiMove = 0.0f, yGuiMove = 0.0f;
 
-
     shared_ptr<Player> footman = GameModel::GetInstance().FindPlayer("footman");
     shared_ptr<Player> grunt = GameModel::GetInstance().FindPlayer("grunt");
     assert(footman); assert(grunt);
@@ -50,21 +49,13 @@ void GameController::run(shared_ptr<GameMap> World)
     World->AddPlayer(grunt);
     World->SetTileOccupant(9, 5, grunt);
 
-    Font font;
-    font.loadFromFile("/Library/Fonts/Arial Unicode.ttf");
-    Text Title("Battle Maze", font, 32);
-    Title.setColor(Color(0, 255, 0));
-    Title.move(float(VMode.width)/2 - float(65.0), 20);
-
+    // The main game loop - continuously polls until a close event is detection
     while (Window.isOpen()){
         Event Event;
         while (Window.pollEvent(Event)){
             switch (Event.type){
                 case Event::Closed:
                     Window.close();
-                    break;
-                case Event::GainedFocus:
-                case Event::LostFocus:
                     break;
                 case Event::KeyReleased:
                     xMove = yMove = 0;
@@ -131,6 +122,12 @@ void GameController::run(shared_ptr<GameMap> World)
     }
 }
 
+/********************************************************************************
+    Loads all the sprites from the Sprite directory
+    - Throws errors if sprites could not be loaded
+    - Initializes Sprite class objects and inserts them into the Model singleton
+    - Sets the initial coordinates of the Map, footman, and grunt sprites
+*********************************************************************************/
 void GameController::LoadSprites()
 {
     if (!Map_pic.loadFromFile("Sprites/map.png")) throw Error("Could not load Map");
@@ -153,9 +150,20 @@ void GameController::LoadSprites()
     Grunt->setPosition(362.5f + (9.0f * 42.25f), 225.0f + (5.0 * 41.0f));
 }
 
+/********************************************************************************
+    Initializes the main parameters of the game
+    - Loads the game title sprite and positions it at the top
+    - Creates the two players (footman and grunt) and stores them into the Model
+*********************************************************************************/
 void GameController::InitializeGame()
 {
     Window.setFramerateLimit(60);
+
+    font.loadFromFile("/Library/Fonts/Arial Unicode.ttf");
+    Title.setString("Battlemaze");
+    Title.setFont(font);
+    Title.setColor(Color(0, 255, 0));
+    Title.move(float(VMode.width)/2 - float(65.0), 20);
 
     shared_ptr<Player> footman(new Player(0, 0, 180, 12, "Footman"));
     shared_ptr<Player> grunt(new Player(9, 5, 240, 10, "Grunt"));

@@ -17,14 +17,21 @@ shared_ptr<GameMap> LoadGameBoard(string);
 
 int main(int argc, char* argv[])
 {
-    // initialize map and game board
-    shared_ptr<GameMap> World = LoadGameBoard("gameboard1.txt");
-    GameController game;
-    game.run(World);
-
+    try {
+        shared_ptr<GameMap> World = LoadGameBoard("gameboard1.txt");
+        GameController game;
+        game.run(World);
+    } catch (Error er) {
+        std::cerr << er.msg << std::endl;
+    }
     return 0;
 }
 
+/********************************************************************************
+    Reads in the text file that represents the actual game board
+    - Throws an error if the file could not be opened
+    - Returns a shared_ptr of the GameMap
+*********************************************************************************/
 shared_ptr<GameMap> LoadGameBoard(string filename)
 {
     ifstream infile;

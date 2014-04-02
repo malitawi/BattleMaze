@@ -19,6 +19,8 @@ private:
 	sf::VideoMode VMode;
 	sf::RenderWindow Window;
 	sf::Texture Map_pic, Footman_pic, Grunt_pic;
+	sf::Font font;
+	sf::Text Title;
 
 	void LoadSprites();
 	void InitializeGame();
