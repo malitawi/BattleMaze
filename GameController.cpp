@@ -36,6 +36,7 @@ void GameController::run(shared_ptr<GameMap> World)
 	shared_ptr<Sprite> Grunt = GameModel::GetInstance().FindSprite("Grunt");
 	assert(Map); assert(Footman); assert(Grunt);
 
+    // coordinate tracking variables for main footman
     int currXPos = 0, currYPos = 0, xMove = 0, yMove = 0;
     int nextXPos = -1, nextYPos = -1;
     float xGuiMove = 0.0f, yGuiMove = 0.0f;
