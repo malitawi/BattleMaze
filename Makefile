@@ -3,7 +3,7 @@ LD = clang++
 
 CFLAGS = -c -m64 -Wall -Werror -pedantic -std=c++11 -stdlib=libc++
 LFLAGS = -m64 -pedantic
-SFML_LIBS = -lsfml-graphics.2 -lsfml-window.2 -lsfml-system.2
+SFML_LIBS = -lsfml-graphics.2.3.0 -lsfml-window.2.3.0 -lsfml-system.2.3.0
 
 SRCS = main.cpp Player.cpp Tile.cpp GameMap.cpp GameModel.cpp GameController.cpp
 OBJS = $(SRCS:.cpp=.o)
