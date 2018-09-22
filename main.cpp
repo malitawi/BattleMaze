@@ -12,6 +12,7 @@
 using std::string;
 using std::ifstream; using std::getline;
 using std::shared_ptr; using std::make_shared;
+using std::cerr; using endl;
 
 shared_ptr<GameMap> LoadGameBoard(string);
 
@@ -22,7 +23,7 @@ int main(int argc, char* argv[])
         GameController game;
         game.run(World);
     } catch (Error er) {
-        std::cerr << er.msg << std::endl;
+        cerr << er.msg << endl;
     }
     return 0;
 }
@@ -54,11 +55,14 @@ shared_ptr<GameMap> LoadGameBoard(string filename)
             walk = WALKABLE;
             if (tile_label == "G"){
                 tile_type = GRASS;
-            }else if (tile_label == "D"){
+            }
+            else if (tile_label == "D"){
                 tile_type = DIRT;
-            }else if (tile_label == "S"){
+            }
+            else if (tile_label == "S"){
                 tile_type = STONE;
-            }else if (tile_label == "T"){
+            }
+            else if (tile_label == "T"){
                 tile_type = TREE;
                 walk = NOT_WALKABLE;
             }
